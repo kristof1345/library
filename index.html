@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>library</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script
+      src="https://kit.fontawesome.com/46ffad99ed.js"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Roboto:wght@300;900&family=Ubuntu+Mono&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header>
+      <div id="logo">Library</div>
+      <div id="addBookSec">
+        <button id="addBookButton" onclick="openWrapper()">Add a book</button>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="grid">
+        <!-- <div class="book">
+          <h2 class="title">Title of the book</h2>
+          <p class="author">the author</p>
+          <p class="pages">358</p>
+          <button class="read">Not read</button> <br />
+          <button class="remove">Remove</button>
+        </div> -->
+      </div>
+    </div>
+
+    <div id="popUpWrapper">
+      <div id="popUp">
+        <input type="text" id="bookTitle" placeholder="Title" />
+        <input type="text" id="bookAuthor" placeholder="Author" />
+        <input type="number" id="bookPages" placeholder="Pages" />
+        <p id="texte">
+          Have you read it? <input type="checkbox" id="readOrNot" />
+        </p>
+        <button id="submitBook" onclick="addBookToLibrary()">Submit</button>
+        <button id="back" onclick="closeWrapper()">Back</button>
+      </div>
+    </div>
+
+    <script src="js.js"></script>
+  </body>
+</html>
