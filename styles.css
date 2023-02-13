@@ -200,3 +200,34 @@ input {
 #submitBook:hover {
   background-color: rgb(186, 185, 185);
 }
+
+@media (max-width: 500px) {
+  header {
+    height: 13vh;
+  }
+
+  #logo {
+    margin-left: 20px;
+    font-size: 3rem;
+  }
+
+  #addBookSec {
+    margin-right: 10px;
+  }
+
+  #addBookSec > button {
+    font-size: 1.2rem;
+    width: 100px;
+    height: 40px;
+  }
+
+  .container {
+    padding: 50px 20px;
+  }
+
+  #grid {
+    grid-template-columns: 1fr;
+    padding: 0 20px;
+    gap: 40px;
+  }
+}
