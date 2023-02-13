@@ -1,100 +1,153 @@
-const wrapper = document.getElementById("popUpWrapper");
-const bookTitle = document.getElementById("bookTitle");
-const bookAuthor = document.getElementById("bookAuthor");
-const bookPages = document.getElementById("bookPages");
-const readOrNot = document.getElementById("readOrNot");
-const grid = document.getElementsByClassName("grid");
-const readToggle = document.getElementsByClassName("read");
+// main div that contains the books
+const books = document.getElementById("grid");
+//add book
+const addBook = document.getElementById("addBookButton");
+//popup
+const modal = document.getElementById("popUp");
+const wrapper = document.getElementById("wrapper");
+//close modal
+const span = document.getElementById("back");
 
-//functions like closing and opening elements
-function openWrapper() {
-  wrapper.style.display = "flex";
-}
-function closeWrapper() {
-  wrapper.style.display = "none";
-}
-
-// book handling part
 let myLibrary = [];
 
-function book(title, author, pages, isRead) {
-  // the constructor
+addBook.addEventListener("click", () => {
+  wrapper.style.display = "flex";
+});
+
+window.addEventListener("click", (e) => {
+  if (e.target == wrapper) {
+    wrapper.style.display = "none";
+  }
+});
+
+span.addEventListener("click", () => {
+  wrapper.style.display = "none";
+});
+
+function Book(title, author, pages, read) {
   this.title = title;
   this.author = author;
   this.pages = pages;
-  this.isRead = isRead;
+  this.read = read;
+  this.id = Math.floor(Math.random() * 1000000);
 }
 
-const Hobbit = new book("Hobbit", "J.R.R. Tolkien", "295", "not read yet");
-
-function addBookToLibrary() {
-  let title = bookTitle.value;
-  let author = bookAuthor.value;
-  let pages = bookPages.value;
-  let isRead = getReadValue();
-  let newBook = new book(title, author, pages, isRead);
-  myLibrary.unshift(newBook);
-  createBookCard();
+function addBookToLibrary(title, author, pages, read) {
+  myLibrary.push(new Book(title, author, pages, read));
+  saveAndRenderBooks();
 }
 
-function getReadValue() {
-  if (readOrNot.checked) return true;
-  else return false;
-}
+const addBookForm = document.getElementById("add-book");
+addBookForm.addEventListener("submit", (e) => {
+  e.preventDefault();
 
-function createBookCard() {
-  let div1 = document.createElement("div");
-
-  let h2 = document.createElement("h2");
-  let t = document.createTextNode(myLibrary[0].title);
-  let p1 = document.createElement("p");
-  let t2 = document.createTextNode(myLibrary[0].author);
-  let p2 = document.createElement("p");
-  let t3 = document.createTextNode(myLibrary[0].pages);
-  let button1 = document.createElement("button");
-  let t4 = document.createTextNode("read");
-  let t6 = document.createTextNode("not read");
-  let button2 = document.createElement("button");
-  let t5 = document.createTextNode("remove");
-
-  h2.classList.add("title");
-  h2.appendChild(t);
-  div1.appendChild(h2);
-
-  p1.classList.add("author");
-  p1.appendChild(t2);
-  div1.appendChild(p1);
-
-  p2.classList.add("pages");
-  p2.appendChild(t3);
-  div1.appendChild(p2);
-
-  if (readOrNot.checked) {
-    button1.classList.add("read");
-    button1.appendChild(t4);
-  } else {
-    button1.classList.add("not-read");
-    button1.appendChild(t6);
+  const data = new FormData(e.target);
+  let newBook = {};
+  for (let [name, value] of data) {
+    if (name === "book-read") {
+      newBook["book-read"] = true;
+    } else {
+      newBook[name] = value || "";
+    }
   }
-  div1.appendChild(button1);
 
-  button2.classList.add("remove");
-  button2.appendChild(t5);
-  div1.appendChild(button2);
+  if (!newBook["book-read"]) {
+    newBook["book-read"] = false;
+  }
 
-  grid[0].appendChild(div1).className = "book";
+  addBookToLibrary(
+    newBook["book-title"],
+    newBook["book-author"],
+    newBook["book-pages"],
+    newBook["book-read"]
+  );
+
+  addBookForm.reset();
+  wrapper.style.display = "none";
+});
+
+function addLocalStorage() {
+  // localStorage => save things in key value pairs - key = library : myLibrary
+  myLibrary = JSON.parse(localStorage.getItem("library")) || [];
+  saveAndRenderBooks();
 }
 
-// function toggleColor() {
-//   if (readOrNot.checked) {
-//     readToggle.style.backgroundColor = "red";
-//     readToggle.innerHTML = "not read";
-//   } else {
-//     readToggle.style.backgroundColor = "green";
-//     readToggle.innerHTML = "read";
-//   }
-// }
+//helper function to create html elements with textcontent and classes
+function createBookElement(el, content, className) {
+  const element = document.createElement(el);
+  element.textContent = content;
+  element.setAttribute("class", className);
+  return element;
+}
 
-/**
- * ! got stuck on removing a book card and changing the color of the read button because the remove func gets called prematurely
- */
+function createReadElement(bookItem, book) {
+  let read = document.createElement("button");
+  read.textContent = "Read?";
+  read.setAttribute("class", "read");
+  let input = document.createElement("input");
+  input.type = "checkbox";
+  input.setAttribute("class", "toggle");
+  input.addEventListener("click", (e) => {
+    if (e.target.checked) {
+      bookItem.setAttribute("class", "red");
+      book.read = true;
+      saveAndRenderBooks();
+    } else {
+      console.log("pff");
+      bookItem.setAttribute("class", "red");
+      book.read = false;
+      saveAndRenderBooks();
+    }
+  });
+  if (book.read) {
+    input.checked = true;
+    bookItem.setAttribute("class", "book");
+  }
+  if (!book.read) {
+    // solution
+    input.checked = false;
+    bookItem.setAttribute("class", "red");
+  }
+  read.appendChild(input);
+  return read;
+}
+
+function deleteBook(index) {
+  myLibrary.splice(index, 1);
+  saveAndRenderBooks();
+}
+
+function createBookItem(book, index) {
+  const bookItem = document.createElement("div");
+  bookItem.setAttribute("id", index);
+  bookItem.setAttribute("key", index);
+  bookItem.setAttribute("class", "book");
+  bookItem.appendChild(createBookElement("p", `${book.title}`, "title"));
+  bookItem.appendChild(createBookElement("p", `${book.author}`, "author"));
+  bookItem.appendChild(createBookElement("p", `${book.pages}`, "pages"));
+  bookItem.appendChild(createReadElement(bookItem, book));
+  bookItem.appendChild(createBookElement("button", "Remove", "delete"));
+
+  bookItem.querySelector(".delete").addEventListener("click", () => {
+    deleteBook(index);
+  });
+
+  books.insertAdjacentElement("afterbegin", bookItem);
+}
+
+//function to render all the books
+function renderBooks() {
+  books.textContent = ""; //??
+  myLibrary.map((book, index) => {
+    // using localstorage to render
+    createBookItem(book, index);
+  });
+}
+
+function saveAndRenderBooks() {
+  localStorage.setItem("library", JSON.stringify(myLibrary));
+  renderBooks();
+}
+
+//render on page load
+addLocalStorage();

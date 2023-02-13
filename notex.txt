@@ -1,0 +1,19 @@
+this was quite a tricky one, first i struggled with making this even function, then i looked it up and now I understand how this should 
+function, this was pretty valueable imo because I think i can use this kind of concept to help me with another project I'm working on 
+right now where I'm stuck
+The thing here that could help me imo is that this program has a constatntly refreshing(rerunning) code, if you look closer the "saveAndRenderBooks"
+function appears a lot in the code, and it makes this code rerun a lot. This combined with the localstorage might help me out
+
+New Things: 
+  FormData: I didn't knew about this thing before, basicly it etracts the values from a form in a key=value format (the keys are the name
+  tags of the input elements)
+
+  LocalStorage: This is knew to me too. And I still don't quite understand it. I think its is a big JSON file holding all the previos data??
+
+  setAttribute: I knew about setting attributes but this was a new waz for me
+
+Problems: 
+  Changing color: In the function "createReadElement" the element should change its color, at first i had a lot of problem with this because 
+  I didn't realise one simple thing and i focused on the event listener part of the function while all i had to do was add "solution"
+
+

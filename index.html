@@ -17,14 +17,14 @@
     <header>
       <div id="logo">Library</div>
       <div id="addBookSec">
-        <button id="addBookButton" onclick="openWrapper()">Add a book</button>
+        <button id="addBookButton">+ Book</button>
       </div>
     </header>
 
     <div class="container">
-      <div class="grid">
+      <div id="grid">
         <!-- <div class="book">
-          <h2 class="title">Title of the book</h2>
+          <p class="title">Title of the book</p>
           <p class="author">the author</p>
           <p class="pages">358</p>
           <button class="read">Not read</button> <br />
@@ -33,16 +33,38 @@
       </div>
     </div>
 
-    <div id="popUpWrapper">
+    <div id="wrapper">
       <div id="popUp">
-        <input type="text" id="bookTitle" placeholder="Title" />
-        <input type="text" id="bookAuthor" placeholder="Author" />
-        <input type="number" id="bookPages" placeholder="Pages" />
-        <p id="texte">
-          Have you read it? <input type="checkbox" id="readOrNot" />
-        </p>
-        <button id="submitBook" onclick="addBookToLibrary()">Submit</button>
-        <button id="back" onclick="closeWrapper()">Back</button>
+        <form id="add-book" action>
+          <input
+            type="text"
+            id="bookTitle"
+            placeholder="Title"
+            name="book-title"
+          />
+          <input
+            type="text"
+            id="bookAuthor"
+            placeholder="Author"
+            name="book-author"
+          />
+          <input
+            type="number"
+            id="bookPages"
+            placeholder="Pages"
+            name="book-pages"
+          />
+          <p id="texte">
+            <input
+              type="checkbox"
+              name="book-read"
+              id="book-read"
+              class="checkmark"
+            />
+          </p>
+          <button type="submit" id="submitBook">Submit</button>
+        </form>
+        <button type="reset" id="back">Back</button>
       </div>
     </div>
 
